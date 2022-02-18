@@ -23,7 +23,7 @@ class MoviePagingSource(
         return try {
             val response = retrofitServiceAPI.getDataFromApi(currentPage)
             progressBar.visibility = View.GONE
-            val moviesList = response.body()!!.results
+            val moviesList = response.body()?.results ?: emptyList()
             LoadResult.Page(
                 data = moviesList,
                 prevKey = if (currentPage == FIRST_PAGE_INDEX) null else currentPage - 1,

@@ -13,7 +13,6 @@ import com.google.android.material.textfield.TextInputLayout
 
 class MovieViewModel : ViewModel() {
     var serviceApi: RetrofitServiceAPI = RetrofitInstance().getRetrofitServiceApi()
-
     fun returnMovies(
         errorDisplay: TextInputLayout,
         progressBar: ProgressBar

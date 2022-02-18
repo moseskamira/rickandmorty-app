@@ -12,7 +12,7 @@ import com.example.paginationandroid.R
 import com.example.paginationandroid.model.Movie
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MovieAdapter : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUtilCallback()) {
+class MovieAdapter : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -37,7 +37,7 @@ class MovieAdapter : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUti
         }
     }
 
-    class DiffUtilCallback : DiffUtil.ItemCallback<Movie>() {
+    object DiffUtilCallback : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.name == newItem.name
         }
