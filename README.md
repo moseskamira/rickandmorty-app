@@ -98,7 +98,7 @@ Paging 3 removes the need for manual pagination:
 ## Setup Instructions
 
 1. Clone the project
-   git clone https://github.com/moseskamira/Pagination-Android.git
+   git clone https://github.com/moseskamira/pagination-android.git
 
 2. Open in Android Studio
 
