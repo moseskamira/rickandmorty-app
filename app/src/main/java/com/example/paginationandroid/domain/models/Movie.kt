@@ -1,4 +1,4 @@
-package com.example.paginationandroid.model
+package com.example.paginationandroid.domain.models
 
 data class Movie(
     val name: String?,

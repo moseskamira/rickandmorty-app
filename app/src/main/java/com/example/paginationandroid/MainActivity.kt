@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.paginationandroid.adapter.MovieAdapter
-import com.example.paginationandroid.viewModel.MovieViewModel
+import com.example.paginationandroid.presentation.viewModel.MovieViewModel
 import com.google.android.material.textfield.TextInputLayout
 
 class MainActivity : AppCompatActivity() {

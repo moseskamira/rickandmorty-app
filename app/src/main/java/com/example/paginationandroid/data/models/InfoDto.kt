@@ -1,6 +1,6 @@
-package com.example.paginationandroid.model
+package com.example.paginationandroid.data.models
 
-data class Info(
+data class InfoDto(
     val count: Int,
     val pages: Int,
     val next: String?,

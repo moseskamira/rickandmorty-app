@@ -1,15 +1,15 @@
-package com.example.paginationandroid.DataSource
+package com.example.paginationandroid.data.DataSource
 
 import android.view.View
 import android.widget.ProgressBar
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.paginationandroid.model.Movie
-import com.example.paginationandroid.network.RetrofitServiceAPI
+import com.example.paginationandroid.domain.models.Movie
+import com.example.paginationandroid.data.network.ApiClient
 import com.google.android.material.textfield.TextInputLayout
 
 class MoviePagingSource(
-    private val retrofitServiceAPI: RetrofitServiceAPI,
+    private val retrofitServiceAPI: ApiClient,
     private val errorDisplay: TextInputLayout,
     private val progressBar: ProgressBar
 ) : PagingSource<Int, Movie>() {

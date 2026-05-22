@@ -1,18 +1,18 @@
-package com.example.paginationandroid.viewModel
+package com.example.paginationandroid.presentation.viewModel
 
 import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.example.paginationandroid.DataSource.MoviePagingSource
-import com.example.paginationandroid.model.Movie
-import com.example.paginationandroid.network.RetrofitInstance
-import com.example.paginationandroid.network.RetrofitServiceAPI
+import com.example.paginationandroid.data.DataSource.MoviePagingSource
+import com.example.paginationandroid.domain.models.Movie
+import com.example.paginationandroid.data.network.ApiService
+import com.example.paginationandroid.data.network.ApiClient
 import com.google.android.material.textfield.TextInputLayout
 
 class MovieViewModel : ViewModel() {
-    var serviceApi: RetrofitServiceAPI = RetrofitInstance().getRetrofitServiceApi()
+    var serviceApi: ApiClient = ApiService().getRetrofitServiceApi()
     fun returnMovies(
         errorDisplay: TextInputLayout,
         progressBar: ProgressBar

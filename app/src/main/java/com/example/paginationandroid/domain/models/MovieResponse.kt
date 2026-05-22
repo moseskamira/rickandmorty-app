@@ -1,4 +1,4 @@
-package com.example.paginationandroid.model
+package com.example.paginationandroid.domain.models
 
 data class MovieResponse(
     val info: Info,

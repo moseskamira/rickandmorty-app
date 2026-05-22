@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.paginationandroid.R
-import com.example.paginationandroid.model.Movie
+import com.example.paginationandroid.domain.models.Movie
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MovieAdapter : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUtilCallback) {
