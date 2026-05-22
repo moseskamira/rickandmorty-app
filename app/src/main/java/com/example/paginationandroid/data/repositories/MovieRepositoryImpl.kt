@@ -15,12 +15,10 @@ class MovieRepositoryImpl(private val apiClient: ApiClient) :
                 val dtoResponse = response.body()
                 val domainResponse = dtoResponse?.toDomain()
                 return NetworkResponse(success = true, data = domainResponse)
-
             } else {
                 val error = response.errorBody()?.string()
                 return NetworkResponse(success = false, error = error)
             }
-
         } catch (e: Exception) {
             val error = e.message
             return NetworkResponse(success = false, error = error)

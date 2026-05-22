@@ -9,9 +9,18 @@ import com.example.paginationandroid.domain.models.MovieResponse
 
 fun MovieDto.toDomain(): Movie {
     return Movie(
+        id = id,
         name = name,
         species = species,
-        image = image
+        image = image,
+        status = status,
+        type = type,
+        gender = gender,
+        url = url,
+        created = created,
+        episode = episode,
+        location = location,
+        origin = origin,
     )
 }
 
