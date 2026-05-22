@@ -1,4 +1,4 @@
-package com.example.paginationandroid.adapter
+package com.example.paginationandroid.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
