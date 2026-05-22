@@ -1,8 +1,8 @@
 package com.example.paginationandroid.data.network
 
 data class NetworkResponse<T>(
-    val success: Boolean,
-    val data: T?,
-    val error: String?,
-    val extra: String?
+    val success: Boolean = false,
+    val data: T? = null,
+    val error: String? = null,
+    val extra: String? = null
 )

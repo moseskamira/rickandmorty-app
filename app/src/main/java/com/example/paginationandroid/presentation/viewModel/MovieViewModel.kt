@@ -9,10 +9,12 @@ import com.example.paginationandroid.data.DataSource.MoviePagingSource
 import com.example.paginationandroid.domain.models.Movie
 import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.network.ApiClient
+import com.example.paginationandroid.data.repositories.MovieRepositoryImpl
 import com.google.android.material.textfield.TextInputLayout
 
 class MovieViewModel : ViewModel() {
-    var serviceApi: ApiClient = ApiService().getRetrofitServiceApi()
+    var apiClient: ApiClient = ApiService().getRetrofitServiceApi()
+    val repo = MovieRepositoryImpl(apiClient = apiClient)
     fun returnMovies(
         errorDisplay: TextInputLayout,
         progressBar: ProgressBar
@@ -21,9 +23,9 @@ class MovieViewModel : ViewModel() {
             config = PagingConfig(pageSize = 20, maxSize = 100),
             pagingSourceFactory = {
                 MoviePagingSource(
-                    serviceApi,
                     errorDisplay,
-                    progressBar
+                    progressBar,
+                    repo
                 )
             }).liveData.cachedIn(
             viewModelScope
