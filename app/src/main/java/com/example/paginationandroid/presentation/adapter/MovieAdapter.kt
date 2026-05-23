@@ -12,7 +12,7 @@ import com.example.paginationandroid.R
 import com.example.paginationandroid.domain.models.Movie
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MovieAdapter : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUtilCallback) {
+class MovieAdapter(private val onMovieClick: (Movie) -> Unit) : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,7 +21,11 @@ class MovieAdapter : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUti
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        getItem(position)?.let {movie-> holder.bindMovieData(movie)
+            holder.itemView.setOnClickListener{
+                onMovieClick(movie)
+            }
+        }
     }
 
 
@@ -29,9 +33,11 @@ class MovieAdapter : PagingDataAdapter<Movie, MovieAdapter.MyViewHolder>(DiffUti
         private val movieNameTv: TextView = view.findViewById(R.id.character_nameTv)
         private val characterSpeciesTv: TextView = view.findViewById(R.id.character_species_tv)
         private val movieImageView: CircleImageView = view.findViewById(R.id.movie_image)
-        fun bind(data: Movie) {
+        private val characterType: TextView = view.findViewById(R.id.character_type_tv)
+        fun bindMovieData(data: Movie) {
             movieNameTv.text = data.name
             characterSpeciesTv.text = data.species
+            characterType.text = data.type
             Glide.with(movieImageView).asBitmap().load(data.image)
                 .into(movieImageView)
         }

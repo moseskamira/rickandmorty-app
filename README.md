@@ -70,7 +70,7 @@ package name
 
 ## Screenshot
 
-![Pagination Demo](images/pagination.png)
+![Pagination Demo](images/movies.png)
 
 ---
 
