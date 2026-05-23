@@ -1,9 +1,10 @@
 package com.example.paginationandroid
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.paginationandroid.data.network.ApiClient
 import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.repositories.MovieRepositoryImpl
+import com.example.paginationandroid.databinding.ActivityMainBinding
+import com.example.paginationandroid.domain.models.Movie
+import com.example.paginationandroid.presentation.activities.MovieDetailsActivity
 import com.example.paginationandroid.presentation.adapter.MovieAdapter
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
 import com.example.paginationandroid.presentation.viewModel.MovieViewModel
@@ -22,20 +26,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var errorDisplay: TextInputLayout
     private lateinit var progressBar: ProgressBar
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        movieRecyclerView = findViewById(R.id.movie_recycler_view)
-        errorDisplay = findViewById(R.id.error_display_layout)
-        progressBar = findViewById(R.id.progress_bar)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val toolbar = binding.mainToolbar
+        setSupportActionBar(toolbar)
+        movieRecyclerView = binding.movieRecyclerView
+        errorDisplay = binding.errorDisplayLayout
+        progressBar = binding.progressBar
         initializeRecyclerView()
         initializeViewModel()
     }
 
     private fun initializeRecyclerView() {
-        movieAdapter = MovieAdapter()
+        movieAdapter = MovieAdapter({ movie ->
+            navigateToMovieDetailsActivity(movie)
+        })
         movieRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             addItemDecoration(
@@ -69,6 +78,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.returnMovies().observe(this) { items ->
             movieAdapter.submitData(this.lifecycle, items)
         }
+    }
+
+    fun navigateToMovieDetailsActivity(movie: Movie) {
+        val intent = Intent(this, MovieDetailsActivity::class.java)
+        intent.putExtra("movie", movie)
+        startActivity(intent)
     }
 
 

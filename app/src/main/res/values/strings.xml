@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PaginationAndroid</string>
+    <string name="status_label">Status: %1$s</string>
+    <string name="species_gender">Species: %1$s | Gender: %2$s</string>
+    <string name="origin_label">Origin: %1$s</string>
+    <string name="location_label">Location: %1$s</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.example.paginationandroid.domain.models
 
-import com.example.paginationandroid.domain.Origin
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Movie(
     val id: Int?,
     val name: String?,
@@ -16,4 +18,4 @@ data class Movie(
     val url: String?,
     val created: String?
 
-)
+): Parcelable

@@ -1,7 +1,5 @@
 package com.example.paginationandroid.data.models
 
-import com.example.paginationandroid.domain.Origin
-
 data class MovieDto(
     val id: Int?,
     val name: String?,
@@ -10,8 +8,8 @@ data class MovieDto(
     val status: String?,
     val type: String?,
     val gender: String?,
-    val origin: Origin?,
-    val location: Origin?,
+    val origin: OriginDto?,
+    val location: OriginDto?,
     val episode: List<String>?,
     val url: String?,
     val created: String?
