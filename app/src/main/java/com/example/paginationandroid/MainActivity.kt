@@ -14,7 +14,6 @@ import com.example.paginationandroid.data.network.ApiClient
 import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.repositories.MovieRepositoryImpl
 import com.example.paginationandroid.databinding.ActivityMainBinding
-import com.example.paginationandroid.domain.models.Movie
 import com.example.paginationandroid.presentation.activities.MovieDetailsActivity
 import com.example.paginationandroid.presentation.adapter.MovieAdapter
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeRecyclerView() {
         movieAdapter = MovieAdapter({ movie ->
-            navigateToMovieDetailsActivity(movie)
+            movie.id?.let { moveToMovieDetailsActivity(it) }
         })
         movieRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -80,9 +79,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun navigateToMovieDetailsActivity(movie: Movie) {
+    private fun moveToMovieDetailsActivity(movieId: Int) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("movie", movie)
+        intent.putExtra("movieId", movieId)
         startActivity(intent)
     }
 
