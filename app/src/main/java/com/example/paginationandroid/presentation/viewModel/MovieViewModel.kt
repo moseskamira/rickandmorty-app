@@ -16,10 +16,11 @@ import com.example.paginationandroid.domain.repositories.MovieRepository
 class MovieViewModel(private val repo: MovieRepository) : ViewModel() {
     private val _movie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> = _movie
-    private val _isMovieLoading = MutableLiveData<Boolean>(false)
+    private val _isMovieLoading = MutableLiveData(false)
     val isMovieLoading: LiveData<Boolean> = _isMovieLoading
     private val _movieError = MutableLiveData<String>("")
     val movieError: LiveData<String> = _movieError
+    private val movieCache = mutableMapOf<Int, Movie>()
 
 
     fun returnMovies(
@@ -36,12 +37,17 @@ class MovieViewModel(private val repo: MovieRepository) : ViewModel() {
     }
 
    suspend fun getMovie(id: Int) {
-        _isMovieLoading.value = true
-        _movieError.value = ""
+       movieCache[id]?.let {
+           _movie.value = it
+           return
+       }
+       _isMovieLoading.value = true
+       _movieError.value = ""
         val response = repo.getSingleMovie(id)
         if (response.success) {
             val data = response.data
             data?.let {
+                movieCache[id] = it
                 _movie.value = it
             }
         } else {
