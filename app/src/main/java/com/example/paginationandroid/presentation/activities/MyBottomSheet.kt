@@ -11,7 +11,7 @@ import com.example.paginationandroid.presentation.adapter.EpisodesAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class MyBottomSheet(private val locations: List<String>) : BottomSheetDialogFragment() {
+class MyBottomSheet(private val episodes: List<String>) : BottomSheetDialogFragment() {
     private var _binding: FragmentMyBottomSheetBinding? = null
     private val binding get() = _binding!!
 
@@ -26,13 +26,14 @@ class MyBottomSheet(private val locations: List<String>) : BottomSheetDialogFrag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recycler = binding.episodesRecycler
-        recycler.layoutManager = LinearLayoutManager(requireContext())
-        recycler.adapter = EpisodesAdapter(locations, onClick = { episode ->
-            val intent = Intent(requireContext(), EpisodeDetailsActivity::class.java)
-            intent.putExtra("episode_link", episode)
-            startActivity(intent)
-        })
+            binding.episodesRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = EpisodesAdapter(episodes=episodes, onClick = { episode ->
+                val intent = Intent(requireContext(), EpisodeDetailsActivity::class.java)
+                intent.putExtra("episode_link", episode)
+                startActivity(intent)
+            })
+        }
     }
 
     override fun onDestroyView() {
