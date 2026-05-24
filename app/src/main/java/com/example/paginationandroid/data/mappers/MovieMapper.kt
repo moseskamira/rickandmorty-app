@@ -1,9 +1,11 @@
 package com.example.paginationandroid.data.mappers
 
+import com.example.paginationandroid.data.models.EpisodeDto
 import com.example.paginationandroid.data.models.InfoDto
 import com.example.paginationandroid.data.models.MovieDto
 import com.example.paginationandroid.data.models.MovieResponseDto
 import com.example.paginationandroid.data.models.OriginDto
+import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.domain.models.Info
 import com.example.paginationandroid.domain.models.Movie
 import com.example.paginationandroid.domain.models.MovieResponse
@@ -44,4 +46,18 @@ fun MovieResponseDto.toDomain(): MovieResponse {
 
 fun OriginDto.toDomain(): Origin {
     return Origin(name = name, url = url)
+}
+
+fun EpisodeDto.toDomain(): Episode {
+    return Episode(
+        id = id,
+        name = name,
+        airDate = airDate,
+        episode = episode,
+        characters = characters,
+        url = url,
+        created = created
+
+    )
+
 }

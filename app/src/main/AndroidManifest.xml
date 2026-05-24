@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PaginationAndroid">
         <activity
+            android:name=".presentation.activities.EpisodeDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.activities.MovieDetailsActivity"
             android:exported="false" />
         <activity

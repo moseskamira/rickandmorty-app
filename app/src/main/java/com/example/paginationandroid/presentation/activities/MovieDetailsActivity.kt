@@ -3,6 +3,7 @@ package com.example.paginationandroid.presentation.activities
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,15 +20,27 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMovieDetailsBinding
     private lateinit var viewModel: MovieViewModel
+    private lateinit var episodesButton: Button
+    private val episodes = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMovieDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        episodesButton = binding.episodesButton
+        episodesButton.setOnClickListener {
+            val bottomSheet = MyBottomSheet(locations = episodes)
+            bottomSheet.show(supportFragmentManager, "MyBottomSheet")
+        }
         setupToolbar()
         initializeViewModel()
         observeViewModel()
         fetchMovie()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     private fun setupToolbar() {
@@ -47,6 +60,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             factory
         )[MovieViewModel::class.java]
     }
+
     private fun fetchMovie() {
         val movieId = intent.getIntExtra("movieId", -1)
         if (movieId == -1) {
@@ -64,6 +78,10 @@ class MovieDetailsActivity : AppCompatActivity() {
                 if (isLoading) View.VISIBLE else View.GONE
         }
         viewModel.movie.observe(this) { movie ->
+            val items = movie.episode
+            if (items != null) {
+                episodes.addAll(items)
+            }
             bindData(movie)
         }
     }
@@ -87,8 +105,5 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
-    }
+
 }
