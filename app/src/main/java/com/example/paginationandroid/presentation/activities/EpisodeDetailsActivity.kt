@@ -12,13 +12,14 @@ import com.example.paginationandroid.databinding.ActivityEpisodeDetailsBinding
 import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.presentation.adapter.CharacterAdapter
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
-import com.example.paginationandroid.presentation.viewModel.MovieViewModel
+import com.example.paginationandroid.presentation.viewModel.CharacterViewModel
 import kotlinx.coroutines.launch
 
 class EpisodeDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEpisodeDetailsBinding
-    private lateinit var viewModel: MovieViewModel
+    private lateinit var viewModel: CharacterViewModel
     private lateinit var characterAdapter: CharacterAdapter
+    private lateinit var episode:Episode
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEpisodeDetailsBinding.inflate(layoutInflater)
@@ -42,7 +43,7 @@ class EpisodeDetailsActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(
             this,
             factory
-        )[MovieViewModel::class.java]
+        )[CharacterViewModel::class.java]
     }
 
     private fun observeViewModel() {
@@ -50,10 +51,7 @@ class EpisodeDetailsActivity : AppCompatActivity() {
             binding.progressIndicator.visibility =
                 if (isCLoading) View.VISIBLE else View.GONE
         }
-        viewModel.episode.observe(this) { episode ->
-            bindEpisode(episode)
-        }
-        viewModel.characters.observe(this) { characters ->
+        viewModel.episodeCharacters.observe(this) { characters ->
             characterAdapter.updateData(characters)
         }
     }
@@ -64,7 +62,7 @@ class EpisodeDetailsActivity : AppCompatActivity() {
             binding.tvAirDate.text = it.airDate
             binding.tvCreated.text = it.created
             lifecycleScope.launch {
-                viewModel.getCharacters(it.characters)
+                viewModel.getEpisodeCharacters(it.characters)
             }
         }
     }
@@ -77,14 +75,13 @@ class EpisodeDetailsActivity : AppCompatActivity() {
     }
 
     private fun fetchEpisode() {
-        val url = intent.getStringExtra("episode_link")
-        if (url == null) {
-            finish()
-            return
-        }
-        lifecycleScope.launch {
-            viewModel.getEpisode(url)
-        }
+        episode = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("episode", Episode::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra<Episode>("episode")
+        } ?: return
+        bindEpisode(episode)
     }
 
     private fun setupToolbar() {

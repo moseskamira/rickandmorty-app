@@ -12,25 +12,30 @@ import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.repositories.CharacterRepositoryImpl
 import com.example.paginationandroid.databinding.ActivityCharacterDetailsBinding
 import com.example.paginationandroid.domain.models.Character
+import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
-import com.example.paginationandroid.presentation.viewModel.MovieViewModel
+import com.example.paginationandroid.presentation.viewModel.CharacterViewModel
 import kotlinx.coroutines.launch
 
 class CharacterDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCharacterDetailsBinding
-    private lateinit var viewModel: MovieViewModel
+    private lateinit var viewModel: CharacterViewModel
     private lateinit var episodesButton: Button
-    private val episodes = mutableListOf<String>()
+    private val episodes = mutableListOf<Episode>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         episodesButton = binding.episodesButton
+        episodesButton.isEnabled= false
         episodesButton.setOnClickListener {
-            val bottomSheet = MyBottomSheet(episodes = episodes)
-            bottomSheet.show(supportFragmentManager, "MyBottomSheet")
+            if (episodes.isEmpty()) {
+                return@setOnClickListener
+            }
+
+            EpisodeBottomSheet(episodes = episodes).show(supportFragmentManager, "MyBottomSheet")
         }
         setupToolbar()
         initializeViewModel()
@@ -58,7 +63,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(
             this,
             factory
-        )[MovieViewModel::class.java]
+        )[CharacterViewModel::class.java]
     }
 
     private fun fetchMovie() {
@@ -77,12 +82,27 @@ class CharacterDetailsActivity : AppCompatActivity() {
             binding.detailProgIndicator.visibility =
                 if (isLoading) View.VISIBLE else View.GONE
         }
+
+        viewModel.characterEpisodesLoading.observe(this) { isLoading ->
+            binding.detailProgIndicator.visibility =
+                if (isLoading) View.VISIBLE else View.GONE
+        }
         viewModel.movie.observe(this) { movie ->
-            val items = movie.episode
-            if (items != null) {
-                episodes.addAll(items)
-            }
+            println("EPISODES RAW FROM API: ${movie?.episode}")
             bindData(movie)
+            movie.episode?.let { epis ->
+                lifecycleScope.launch {
+                    viewModel.getCharacterEpisodes(epis)
+                }
+            }
+
+        }
+        viewModel.characterEpisodes.observe(this) { list ->
+            episodes.clear()
+            episodes.addAll(list)
+            episodesButton.isEnabled = list.isNotEmpty()
+
+            println("GOTITEMSINCLUDE: ${list.size}")
         }
     }
 

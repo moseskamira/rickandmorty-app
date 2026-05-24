@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.paginationandroid.databinding.ItemEpisodeBinding
+import com.example.paginationandroid.domain.models.Episode
 
 class EpisodesAdapter(
-    private val episodes: List<String>, private val onClick: (String) -> Unit
+    private val episodes: List<Episode>, private val onClick: (Episode) -> Unit
 ) : RecyclerView.Adapter<EpisodesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,8 +28,8 @@ class EpisodesAdapter(
     }
 
     class ViewHolder(private val binding: ItemEpisodeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindData(epi: String) {
-            binding.episodeText.text = epi
+        fun bindData(epi: Episode) {
+            binding.episodeText.text = epi.name
         }
     }
 

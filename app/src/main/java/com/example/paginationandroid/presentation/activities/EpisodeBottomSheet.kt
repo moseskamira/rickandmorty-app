@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.paginationandroid.databinding.FragmentMyBottomSheetBinding
+import com.example.paginationandroid.databinding.FragmentEpisodeBottomSheetBinding
+import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.presentation.adapter.EpisodesAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class MyBottomSheet(private val episodes: List<String>) : BottomSheetDialogFragment() {
-    private var _binding: FragmentMyBottomSheetBinding? = null
+class EpisodeBottomSheet(private val episodes: List<Episode>) : BottomSheetDialogFragment() {
+    private var _binding: FragmentEpisodeBottomSheetBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +21,7 @@ class MyBottomSheet(private val episodes: List<String>) : BottomSheetDialogFragm
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyBottomSheetBinding.inflate(inflater, container, false)
+        _binding = FragmentEpisodeBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,7 +31,7 @@ class MyBottomSheet(private val episodes: List<String>) : BottomSheetDialogFragm
             layoutManager = LinearLayoutManager(requireContext())
             adapter = EpisodesAdapter(episodes=episodes, onClick = { episode ->
                 val intent = Intent(requireContext(), EpisodeDetailsActivity::class.java)
-                intent.putExtra("episode_link", episode)
+                intent.putExtra("episode", episode)
                 startActivity(intent)
             })
         }

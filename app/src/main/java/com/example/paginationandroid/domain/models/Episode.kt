@@ -1,6 +1,9 @@
 package com.example.paginationandroid.domain.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Episode(
     val id: Long,
     val name: String,
@@ -9,4 +12,4 @@ data class Episode(
     val characters: List<String>,
     val url: String,
     val created: String,
-)
+) : Parcelable
