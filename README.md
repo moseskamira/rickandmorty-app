@@ -72,6 +72,8 @@ package name
 
 ![Pagination Demo](images/movies.png)
 
+![Pagination Demo](images/detail.png)
+
 ---
 
 ## How It Works

@@ -29,7 +29,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         episodesButton = binding.episodesButton
         episodesButton.setOnClickListener {
-            val bottomSheet = MyBottomSheet(locations = episodes)
+            val bottomSheet = MyBottomSheet(episodes = episodes)
             bottomSheet.show(supportFragmentManager, "MyBottomSheet")
         }
         setupToolbar()
