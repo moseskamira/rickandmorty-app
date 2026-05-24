@@ -2,17 +2,17 @@ package com.example.paginationandroid.data.mappers
 
 import com.example.paginationandroid.data.models.EpisodeDto
 import com.example.paginationandroid.data.models.InfoDto
-import com.example.paginationandroid.data.models.MovieDto
-import com.example.paginationandroid.data.models.MovieResponseDto
+import com.example.paginationandroid.data.models.CharacterDto
+import com.example.paginationandroid.data.models.CharacterResponseDto
 import com.example.paginationandroid.data.models.OriginDto
 import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.domain.models.Info
-import com.example.paginationandroid.domain.models.Movie
-import com.example.paginationandroid.domain.models.MovieResponse
+import com.example.paginationandroid.domain.models.Character
+import com.example.paginationandroid.domain.models.CharacterResponse
 import com.example.paginationandroid.domain.models.Origin
 
-fun MovieDto.toDomain(): Movie {
-    return Movie(
+fun CharacterDto.toDomain(): Character {
+    return Character(
         id = id,
         name = name,
         species = species,
@@ -37,8 +37,8 @@ fun InfoDto.toDomain(): Info {
     )
 }
 
-fun MovieResponseDto.toDomain(): MovieResponse {
-    return MovieResponse(
+fun CharacterResponseDto.toDomain(): CharacterResponse {
+    return CharacterResponse(
         info = info.toDomain(),
         results = results.map { dto -> dto.toDomain() }
     )

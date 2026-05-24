@@ -1,6 +1,6 @@
 package com.example.paginationandroid.data.models
 
-data class MovieResponseDto(
+data class CharacterResponseDto(
     val info: InfoDto,
-    val results: List<MovieDto>
+    val results: List<CharacterDto>
 )
