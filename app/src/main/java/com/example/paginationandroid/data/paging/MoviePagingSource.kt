@@ -20,7 +20,7 @@ class MoviePagingSource(
     ): LoadResult<Int, Character> {
         return try {
             val currentPage = params.key ?: FIRST_PAGE_INDEX
-            val response = repo.getMovies(currentPage)
+            val response = repo.getCharacters(currentPage)
             if (response.success) {
                 val movies = response.data?.results ?: emptyList()
                 LoadResult.Page(

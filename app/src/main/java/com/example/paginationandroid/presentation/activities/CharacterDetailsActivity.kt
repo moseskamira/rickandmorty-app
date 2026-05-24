@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.paginationandroid.R
 import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.repositories.CharacterRepositoryImpl
 import com.example.paginationandroid.databinding.ActivityCharacterDetailsBinding
@@ -24,17 +25,18 @@ class CharacterDetailsActivity : AppCompatActivity() {
     private lateinit var episodesButton: Button
     private val episodes = mutableListOf<Episode>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         episodesButton = binding.episodesButton
-        episodesButton.isEnabled= false
+        episodesButton.isEnabled = false
+        episodesButton.text = getString(R.string.please_wait)
         episodesButton.setOnClickListener {
             if (episodes.isEmpty()) {
                 return@setOnClickListener
             }
-
             EpisodeBottomSheet(episodes = episodes).show(supportFragmentManager, "MyBottomSheet")
         }
         setupToolbar()
@@ -77,6 +79,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
         }
     }
 
+
     private fun observeViewModel() {
         viewModel.isMovieLoading.observe(this) { isLoading ->
             binding.detailProgIndicator.visibility =
@@ -84,37 +87,41 @@ class CharacterDetailsActivity : AppCompatActivity() {
         }
 
         viewModel.characterEpisodesLoading.observe(this) { isLoading ->
-            binding.detailProgIndicator.visibility =
+            binding.episodesProgIndicator.visibility =
                 if (isLoading) View.VISIBLE else View.GONE
         }
         viewModel.movie.observe(this) { movie ->
-            println("EPISODES RAW FROM API: ${movie?.episode}")
             bindData(movie)
-            movie.episode?.let { epis ->
+            movie.episode?.let {
+                binding.episodesProgIndicator.visibility = View.VISIBLE
                 lifecycleScope.launch {
-                    viewModel.getCharacterEpisodes(epis)
+                    viewModel.getCharacterEpisodes(it)
                 }
             }
 
         }
         viewModel.characterEpisodes.observe(this) { list ->
+            episodesButton.isEnabled = true
+            episodesButton.text = getString(R.string.view_episodes)
             episodes.clear()
             episodes.addAll(list)
-            episodesButton.isEnabled = list.isNotEmpty()
-
-            println("GOTITEMSINCLUDE: ${list.size}")
+            binding.episodeCount.text = "${episodes.size}"
         }
     }
 
-    @SuppressLint("SetTextI18n")
+
     private fun bindData(movie: Character?) {
         movie?.let {
             binding.movieName.text =
-                it.name ?: "Unknown"
+                it.name ?: ""
             binding.movieStatus.text =
                 it.status ?: "Unknown"
             binding.movieSpeciesGender.text =
-                "${it.species ?: "-"} | ${it.gender ?: "-"}"
+                getString(
+                    R.string.species_gender_format,
+                    it.species ?: "-",
+                    it.gender ?: "-"
+                )
             binding.movieOrigin.text =
                 it.origin?.name ?: "Unknown"
             binding.movieLocation.text =

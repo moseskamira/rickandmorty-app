@@ -5,8 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- HEADER -->
+    <TextView
+        android:id="@+id/tvEpisodesHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/episodes"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- EPISODES LIST -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/episodes_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
 </LinearLayout>

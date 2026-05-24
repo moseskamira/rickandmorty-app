@@ -1,17 +1,16 @@
 package com.example.paginationandroid.data.repositories
 
-import android.util.Log
 import com.example.paginationandroid.data.mappers.toDomain
 import com.example.paginationandroid.data.network.ApiClient
 import com.example.paginationandroid.data.network.NetworkResponse
-import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.domain.models.Character
 import com.example.paginationandroid.domain.models.CharacterResponse
+import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.domain.repositories.CharacterRepository
 
 class CharacterRepositoryImpl(private val apiClient: ApiClient) :
     CharacterRepository {
-    override suspend fun getMovies(page: Int): NetworkResponse<CharacterResponse> {
+    override suspend fun getCharacters(page: Int): NetworkResponse<CharacterResponse> {
         return try {
             val response = apiClient.getMovies(page)
             if (response.isSuccessful) {
@@ -41,22 +40,6 @@ class CharacterRepositoryImpl(private val apiClient: ApiClient) :
                 val dtoMovie = response.body()
                 val domainMovie = dtoMovie?.toDomain()
                 return NetworkResponse(success = true, data = domainMovie)
-            } else {
-                val error = response.errorBody()?.string()
-                return NetworkResponse(success = false, error = error)
-            }
-        } catch (e: Exception) {
-            val error = e.message
-            return NetworkResponse(success = false, error = error)
-        }
-    }
-
-    override suspend fun getSingleEpisode(url: String): NetworkResponse<Episode> {
-        try {
-            val response = apiClient.getEpisode(url = url)
-            if (response.isSuccessful) {
-                val domain = response.body()?.toDomain()
-                return NetworkResponse(success = true, data = domain)
             } else {
                 val error = response.errorBody()?.string()
                 return NetworkResponse(success = false, error = error)

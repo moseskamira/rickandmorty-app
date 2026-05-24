@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.paginationandroid.R
 import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.repositories.CharacterRepositoryImpl
 import com.example.paginationandroid.databinding.ActivityEpisodeDetailsBinding
@@ -19,7 +20,7 @@ class EpisodeDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEpisodeDetailsBinding
     private lateinit var viewModel: CharacterViewModel
     private lateinit var characterAdapter: CharacterAdapter
-    private lateinit var episode:Episode
+    private lateinit var episode: Episode
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEpisodeDetailsBinding.inflate(layoutInflater)
@@ -52,9 +53,12 @@ class EpisodeDetailsActivity : AppCompatActivity() {
                 if (isCLoading) View.VISIBLE else View.GONE
         }
         viewModel.episodeCharacters.observe(this) { characters ->
+            binding.tvCharactersTitle.text =
+                getString(R.string.characters_count, characters.size)
             characterAdapter.updateData(characters)
         }
     }
+
     private fun bindEpisode(episode: Episode?) {
         episode?.let {
             binding.tvEpisodeName.text = it.name
@@ -66,6 +70,7 @@ class EpisodeDetailsActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun setupRecycler() {
         characterAdapter = CharacterAdapter(emptyList())
         binding.rvCharacters.apply {
