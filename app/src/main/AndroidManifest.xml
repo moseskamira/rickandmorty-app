@@ -13,10 +13,10 @@
             android:name=".presentation.activities.EpisodeDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.activities.MovieDetailsActivity"
+            android:name=".presentation.activities.CharacterDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".MovieActivity"
+            android:name=".CharacterActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

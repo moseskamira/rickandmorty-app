@@ -10,22 +10,22 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.repositories.CharacterRepositoryImpl
-import com.example.paginationandroid.databinding.ActivityMovieDetailsBinding
+import com.example.paginationandroid.databinding.ActivityCharacterDetailsBinding
 import com.example.paginationandroid.domain.models.Character
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
 import com.example.paginationandroid.presentation.viewModel.MovieViewModel
 import kotlinx.coroutines.launch
 
-class MovieDetailsActivity : AppCompatActivity() {
+class CharacterDetailsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMovieDetailsBinding
+    private lateinit var binding: ActivityCharacterDetailsBinding
     private lateinit var viewModel: MovieViewModel
     private lateinit var episodesButton: Button
     private val episodes = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMovieDetailsBinding.inflate(layoutInflater)
+        binding = ActivityCharacterDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         episodesButton = binding.episodesButton
         episodesButton.setOnClickListener {
