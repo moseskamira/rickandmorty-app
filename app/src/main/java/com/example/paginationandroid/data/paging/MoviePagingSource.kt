@@ -2,13 +2,13 @@ package com.example.paginationandroid.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.paginationandroid.domain.models.Movie
-import com.example.paginationandroid.domain.repositories.MovieRepository
+import com.example.paginationandroid.domain.models.Character
+import com.example.paginationandroid.domain.repositories.CharacterRepository
 
 class MoviePagingSource(
-    private val repo: MovieRepository
-) : PagingSource<Int, Movie>() {
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+    private val repo: CharacterRepository
+) : PagingSource<Int, Character>() {
+    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
         return state.anchorPosition?.let { position ->
             state.closestPageToPosition(position)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(position)?.nextKey?.minus(1)
@@ -17,7 +17,7 @@ class MoviePagingSource(
 
     override suspend fun load(
         params: LoadParams<Int>
-    ): LoadResult<Int, Movie> {
+    ): LoadResult<Int, Character> {
         return try {
             val currentPage = params.key ?: FIRST_PAGE_INDEX
             val response = repo.getMovies(currentPage)

@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.paginationandroid.data.network.ApiService
-import com.example.paginationandroid.data.repositories.MovieRepositoryImpl
+import com.example.paginationandroid.data.repositories.CharacterRepositoryImpl
 import com.example.paginationandroid.databinding.ActivityMovieDetailsBinding
-import com.example.paginationandroid.domain.models.Movie
+import com.example.paginationandroid.domain.models.Character
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
 import com.example.paginationandroid.presentation.viewModel.MovieViewModel
 import kotlinx.coroutines.launch
@@ -53,7 +53,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun initializeViewModel() {
         val apiClient = ApiService().getRetrofitServiceApi()
-        val repository = MovieRepositoryImpl(apiClient)
+        val repository = CharacterRepositoryImpl(apiClient)
         val factory = AppViewModelFactory(movieRepo = repository)
         viewModel = ViewModelProvider(
             this,
@@ -87,7 +87,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindData(movie: Movie?) {
+    private fun bindData(movie: Character?) {
         movie?.let {
             binding.movieName.text =
                 it.name ?: "Unknown"

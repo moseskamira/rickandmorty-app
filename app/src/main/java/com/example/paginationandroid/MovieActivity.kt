@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paginationandroid.data.network.ApiClient
 import com.example.paginationandroid.data.network.ApiService
-import com.example.paginationandroid.data.repositories.MovieRepositoryImpl
+import com.example.paginationandroid.data.repositories.CharacterRepositoryImpl
 import com.example.paginationandroid.databinding.ActivityMovieBinding
 import com.example.paginationandroid.presentation.activities.MovieDetailsActivity
 import com.example.paginationandroid.presentation.adapter.MovieAdapter
@@ -68,7 +68,7 @@ class MovieActivity : AppCompatActivity() {
 
     private fun initializeViewModel() {
         val apiClient: ApiClient = ApiService().getRetrofitServiceApi()
-        val repo = MovieRepositoryImpl(apiClient = apiClient)
+        val repo = CharacterRepositoryImpl(apiClient = apiClient)
         val factory = AppViewModelFactory(repo)
         val viewModel = ViewModelProvider(this, factory = factory)[MovieViewModel::class.java]
         viewModel.returnMovies().observe(this) { items ->

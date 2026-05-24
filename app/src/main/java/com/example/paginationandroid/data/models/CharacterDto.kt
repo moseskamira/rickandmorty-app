@@ -1,6 +1,6 @@
 package com.example.paginationandroid.data.models
 
-data class MovieDto(
+data class CharacterDto(
     val id: Int?,
     val name: String?,
     val species: String?,

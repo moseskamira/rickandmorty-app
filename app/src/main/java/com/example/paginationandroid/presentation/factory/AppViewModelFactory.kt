@@ -2,11 +2,11 @@ package com.example.paginationandroid.presentation.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.paginationandroid.domain.repositories.MovieRepository
+import com.example.paginationandroid.domain.repositories.CharacterRepository
 import com.example.paginationandroid.presentation.viewModel.MovieViewModel
 
 class AppViewModelFactory(
-    private val movieRepo: MovieRepository,
+    private val movieRepo: CharacterRepository,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieViewModel::class.java)) {
