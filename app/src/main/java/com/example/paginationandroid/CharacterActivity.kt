@@ -12,22 +12,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.paginationandroid.data.network.ApiClient
 import com.example.paginationandroid.data.network.ApiService
 import com.example.paginationandroid.data.repositories.CharacterRepositoryImpl
-import com.example.paginationandroid.databinding.ActivityMovieBinding
-import com.example.paginationandroid.presentation.activities.MovieDetailsActivity
-import com.example.paginationandroid.presentation.adapter.MovieAdapter
+import com.example.paginationandroid.databinding.ActivityCharacterBinding
+import com.example.paginationandroid.presentation.activities.CharacterDetailsActivity
+import com.example.paginationandroid.presentation.adapter.CharacterPagingAdapter
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
 import com.example.paginationandroid.presentation.viewModel.MovieViewModel
 import com.google.android.material.textfield.TextInputLayout
 
-class MovieActivity : AppCompatActivity() {
-    private lateinit var movieAdapter: MovieAdapter
+class CharacterActivity : AppCompatActivity() {
+    private lateinit var movieAdapter: CharacterPagingAdapter
     private lateinit var errorDisplay: TextInputLayout
     private lateinit var progressBar: ProgressBar
-    private lateinit var binding: ActivityMovieBinding
+    private lateinit var binding: ActivityCharacterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMovieBinding.inflate(layoutInflater)
+        binding = ActivityCharacterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val toolbar = binding.mainToolbar
         setSupportActionBar(toolbar)
@@ -38,11 +38,11 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun initializeRecyclerView() {
-        movieAdapter = MovieAdapter({ movie ->
+        movieAdapter = CharacterPagingAdapter({ movie ->
             movie.id?.let { moveToMovieDetailsActivity(it) }
         })
         binding.movieRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MovieActivity)
+            layoutManager = LinearLayoutManager(this@CharacterActivity)
             addItemDecoration(
                 DividerItemDecoration(
                     applicationContext,
@@ -77,7 +77,7 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun moveToMovieDetailsActivity(movieId: Int) {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
+        val intent = Intent(this, CharacterDetailsActivity::class.java)
         intent.putExtra("movieId", movieId)
         startActivity(intent)
     }

@@ -12,7 +12,8 @@ import com.example.paginationandroid.R
 import com.example.paginationandroid.domain.models.Character
 import de.hdodenhof.circleimageview.CircleImageView
 
-class MovieAdapter(private val onMovieClick: (Character) -> Unit) : PagingDataAdapter<Character, MovieAdapter.MyViewHolder>(DiffUtilCallback) {
+class CharacterPagingAdapter(private val onMovieClick: (Character) -> Unit) :
+    PagingDataAdapter<Character, CharacterPagingAdapter.MyViewHolder>(DiffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,8 +22,9 @@ class MovieAdapter(private val onMovieClick: (Character) -> Unit) : PagingDataAd
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        getItem(position)?.let {movie-> holder.bindMovieData(movie)
-            holder.itemView.setOnClickListener{
+        getItem(position)?.let { movie ->
+            holder.bindMovieData(movie)
+            holder.itemView.setOnClickListener {
                 onMovieClick(movie)
             }
         }
