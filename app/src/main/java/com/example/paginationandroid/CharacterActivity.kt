@@ -16,7 +16,7 @@ import com.example.paginationandroid.databinding.ActivityCharacterBinding
 import com.example.paginationandroid.presentation.activities.CharacterDetailsActivity
 import com.example.paginationandroid.presentation.adapter.CharacterPagingAdapter
 import com.example.paginationandroid.presentation.factory.AppViewModelFactory
-import com.example.paginationandroid.presentation.viewModel.MovieViewModel
+import com.example.paginationandroid.presentation.viewModel.CharacterViewModel
 import com.google.android.material.textfield.TextInputLayout
 
 class CharacterActivity : AppCompatActivity() {
@@ -70,7 +70,7 @@ class CharacterActivity : AppCompatActivity() {
         val apiClient: ApiClient = ApiService().getRetrofitServiceApi()
         val repo = CharacterRepositoryImpl(apiClient = apiClient)
         val factory = AppViewModelFactory(repo)
-        val viewModel = ViewModelProvider(this, factory = factory)[MovieViewModel::class.java]
+        val viewModel = ViewModelProvider(this, factory = factory)[CharacterViewModel::class.java]
         viewModel.returnMovies().observe(this) { items ->
             movieAdapter.submitData(this.lifecycle, items)
         }

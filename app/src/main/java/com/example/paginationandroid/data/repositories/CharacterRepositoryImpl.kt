@@ -1,5 +1,6 @@
 package com.example.paginationandroid.data.repositories
 
+import android.util.Log
 import com.example.paginationandroid.data.mappers.toDomain
 import com.example.paginationandroid.data.network.ApiClient
 import com.example.paginationandroid.data.network.NetworkResponse
@@ -11,22 +12,26 @@ import com.example.paginationandroid.domain.repositories.CharacterRepository
 class CharacterRepositoryImpl(private val apiClient: ApiClient) :
     CharacterRepository {
     override suspend fun getMovies(page: Int): NetworkResponse<CharacterResponse> {
-        try {
+        return try {
             val response = apiClient.getMovies(page)
             if (response.isSuccessful) {
-                val dtoResponse = response.body()
-                val domainResponse = dtoResponse?.toDomain()
-                return NetworkResponse(success = true, data = domainResponse)
+                val domain = response.body()?.toDomain()
+                NetworkResponse(
+                    success = true,
+                    data = domain
+                )
             } else {
-                val error = response.errorBody()?.string()
-                return NetworkResponse(success = false, error = error)
+                NetworkResponse(
+                    success = false,
+                    error = response.errorBody()?.string()
+                )
             }
         } catch (e: Exception) {
-            val error = e.message
-            return NetworkResponse(success = false, error = error)
-
+            NetworkResponse(
+                success = false,
+                error = e.localizedMessage ?: "Unknown error"
+            )
         }
-
     }
 
     override suspend fun getSingleMovie(id: Int): NetworkResponse<Character> {
@@ -50,9 +55,8 @@ class CharacterRepositoryImpl(private val apiClient: ApiClient) :
         try {
             val response = apiClient.getEpisode(url = url)
             if (response.isSuccessful) {
-                val dtoEpisode = response.body()
-                val domainEpisode = dtoEpisode?.toDomain()
-                return NetworkResponse(success = true, data = domainEpisode)
+                val domain = response.body()?.toDomain()
+                return NetworkResponse(success = true, data = domain)
             } else {
                 val error = response.errorBody()?.string()
                 return NetworkResponse(success = false, error = error)
@@ -63,34 +67,64 @@ class CharacterRepositoryImpl(private val apiClient: ApiClient) :
         }
     }
 
-    override suspend fun getCharacters(
+    override suspend fun getCharacterEpisodes(
+        urls: List<String>
+    ): NetworkResponse<List<Episode>> {
+
+        return try {
+            val episodes = mutableListOf<Episode>()
+            for (url in urls) {
+                try {
+                    val response = apiClient.getEpisode(url = url)
+                    if (!response.isSuccessful) {
+                        continue
+                    }
+                    val body = response.body()
+                    if (body != null) {
+                        episodes.add(body.toDomain())
+                    }
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+
+            NetworkResponse(
+                success = true,
+                data = episodes
+            )
+
+        } catch (e: Exception) {
+            NetworkResponse(
+                success = false,
+                error = e.message
+            )
+        }
+    }
+
+    override suspend fun getEpisodeCharacters(
         urls: List<String>
     ): NetworkResponse<List<Character>> {
         return try {
             val characters = mutableListOf<Character>()
-            urls.forEach { url ->
-                val response = apiClient.getCharacter(url)
-                if (!response.isSuccessful) {
-                    return NetworkResponse(
-                        success = false,
-                        error = response.errorBody()?.string()
-                            ?: "Failed to fetch character"
-                    )
+            for (url in urls) {
+                try {
+                    val response = apiClient.getCharacter(url)
+                    if (!response.isSuccessful) {
+                        continue
+                    }
+                    val body = response.body()
+                    if (body != null) {
+                        characters.add(body.toDomain())
+                    }
+                } catch (e: Exception) {
+                    continue
                 }
-                val body = response.body()
-                    ?: return NetworkResponse(
-                        success = false,
-                        error = "Character response body is null"
-                    )
-                characters.add(body.toDomain())
             }
             NetworkResponse(
                 success = true,
                 data = characters
             )
-
         } catch (e: Exception) {
-
             NetworkResponse(
                 success = false,
                 error = e.message ?: "Unknown error occurred"

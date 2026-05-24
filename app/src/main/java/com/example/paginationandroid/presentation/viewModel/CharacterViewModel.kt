@@ -10,14 +10,16 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.liveData
 import com.example.paginationandroid.data.paging.MoviePagingSource
-import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.domain.models.Character
+import com.example.paginationandroid.domain.models.Episode
 import com.example.paginationandroid.domain.repositories.CharacterRepository
 
-class MovieViewModel(private val repo: CharacterRepository) : ViewModel() {
+class CharacterViewModel(private val repo: CharacterRepository) : ViewModel() {
     private val _movie = MutableLiveData<Character>()
-    private val _characters = MutableLiveData<List<Character>>()
-    val characters: LiveData<List<Character>> = _characters
+    private val _episodeCharacters = MutableLiveData<List<Character>>()
+    private val _characterEpisodes = MutableLiveData<List<Episode>>()
+    val characterEpisodes: LiveData<List<Episode>> = _characterEpisodes
+    val episodeCharacters: LiveData<List<Character>> = _episodeCharacters
     private val _charactersError = MutableLiveData("")
     val charactersError:LiveData<String> = _charactersError
     private val _episode = MutableLiveData<Episode>()
@@ -26,7 +28,9 @@ class MovieViewModel(private val repo: CharacterRepository) : ViewModel() {
     val episode: LiveData<Episode> = _episode
     private val _isMovieLoading = MutableLiveData(false)
     private val _isLoadingCharacters = MutableLiveData(false)
+    private val _characterEpisodesLoading = MutableLiveData(false)
     val isLoadingCharacters: LiveData<Boolean> = _isLoadingCharacters
+    val characterEpisodesLoading:LiveData<Boolean> = _characterEpisodesLoading
     val isMovieLoading: LiveData<Boolean> = _isMovieLoading
     private val _movieError = MutableLiveData<String>("")
     val movieError: LiveData<String> = _movieError
@@ -95,13 +99,13 @@ class MovieViewModel(private val repo: CharacterRepository) : ViewModel() {
 
     }
 
-    suspend fun getCharacters(urls: List<String>) {
+    suspend fun getEpisodeCharacters(urls: List<String>) {
         _isLoadingCharacters.value = true
         _charactersError.value = ""
         try {
-            val response = repo.getCharacters(urls = urls)
+            val response = repo.getEpisodeCharacters(urls = urls)
             if (response.success) {
-                _characters.value = response.data ?: emptyList()
+                _episodeCharacters.value = response.data ?: emptyList()
             } else {
                 _charactersError.value = response.error ?: "Unknown error"
             }
@@ -109,6 +113,20 @@ class MovieViewModel(private val repo: CharacterRepository) : ViewModel() {
             _charactersError.value = e.message ?: "Network error"
         } finally {
             _isLoadingCharacters.value = false
+        }
+    }
+
+    suspend fun getCharacterEpisodes(urls: List<String>) {
+        _characterEpisodesLoading.value = true
+        try {
+            val response = repo.getCharacterEpisodes(urls = urls)
+            if (response.success) {
+                _characterEpisodes.value = response.data ?: emptyList()
+            } else {
+            }
+        } catch (e: Exception) {
+        } finally {
+            _characterEpisodesLoading.value = false
         }
     }
 }
