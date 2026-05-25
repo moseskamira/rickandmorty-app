@@ -14,6 +14,7 @@ import com.kamira.mortyverse.data.repositories.CharacterRepositoryImpl
 import com.kamira.mortyverse.databinding.ActivityEpisodeDetailsBinding
 import com.kamira.mortyverse.domain.models.Episode
 import com.kamira.mortyverse.presentation.adapter.CharacterAdapter
+import com.kamira.mortyverse.presentation.extensions.applyToolbarInsets
 import com.kamira.mortyverse.presentation.factory.AppViewModelFactory
 import com.kamira.mortyverse.presentation.viewModel.CharacterViewModel
 import kotlinx.coroutines.launch
@@ -95,11 +96,13 @@ class EpisodeDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
+        val toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = "Episode Info"
         }
+        toolbar.applyToolbarInsets()
     }
 
     private fun moveToMovieDetailsActivity(movieId: Int) {

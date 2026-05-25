@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,6 +20,7 @@ import com.kamira.mortyverse.presentation.adapter.CharacterPagingAdapter
 import com.kamira.mortyverse.presentation.factory.AppViewModelFactory
 import com.kamira.mortyverse.presentation.viewModel.CharacterViewModel
 import com.google.android.material.textfield.TextInputLayout
+import com.kamira.mortyverse.presentation.extensions.applyToolbarInsets
 
 class CharacterActivity : AppCompatActivity() {
     private lateinit var movieAdapter: CharacterPagingAdapter
@@ -31,6 +34,7 @@ class CharacterActivity : AppCompatActivity() {
         setContentView(binding.root)
         val toolbar = binding.mainToolbar
         setSupportActionBar(toolbar)
+        toolbar.applyToolbarInsets()
         errorDisplay = binding.errorDisplayLayout
         progressBar = binding.progressBar
         initializeRecyclerView()
