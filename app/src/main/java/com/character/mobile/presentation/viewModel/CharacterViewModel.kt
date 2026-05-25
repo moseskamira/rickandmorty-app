@@ -31,6 +31,9 @@ class CharacterViewModel(private val repo: CharacterRepository) : ViewModel() {
     val isMovieLoading: LiveData<Boolean> = _isMovieLoading
     private val _movieError = MutableLiveData("")
     val movieError: LiveData<String> = _movieError
+    private val _characterEpisodesError = MutableLiveData("")
+    val characterEpisodesError: LiveData<String> = _characterEpisodesError
+
     private val movieCache = mutableMapOf<Int, Character>()
     private val episodeCache = mutableMapOf<String, Episode>()
 
@@ -95,8 +98,12 @@ class CharacterViewModel(private val repo: CharacterRepository) : ViewModel() {
             if (response.success) {
                 _characterEpisodes.value = response.data ?: emptyList()
             } else {
+                val error = response.error
+                _characterEpisodesError.value = error
             }
         } catch (e: Exception) {
+            val error = e.message
+            _characterEpisodesError.value = error
         } finally {
             _characterEpisodesLoading.value = false
         }
