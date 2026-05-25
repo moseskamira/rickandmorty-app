@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -13,6 +15,7 @@ import com.kamira.mortyverse.data.repositories.CharacterRepositoryImpl
 import com.kamira.mortyverse.databinding.ActivityCharacterDetailsBinding
 import com.kamira.mortyverse.domain.models.Character
 import com.kamira.mortyverse.domain.models.Episode
+import com.kamira.mortyverse.presentation.extensions.applyToolbarInsets
 import com.kamira.mortyverse.presentation.factory.AppViewModelFactory
 import com.kamira.mortyverse.presentation.viewModel.CharacterViewModel
 import kotlinx.coroutines.launch
@@ -29,6 +32,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         episodesButton = binding.episodesButton
         episodesButton.isEnabled = false
         episodesButton.text = getString(R.string.please_wait)
@@ -50,11 +54,13 @@ class CharacterDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
+        val toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = "Movie Details"
         }
+       toolbar.applyToolbarInsets()
     }
 
     private fun initializeViewModel() {
