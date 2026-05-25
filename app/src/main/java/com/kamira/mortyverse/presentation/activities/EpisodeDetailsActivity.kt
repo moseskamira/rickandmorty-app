@@ -1,10 +1,12 @@
 package com.kamira.mortyverse.presentation.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kamira.mortyverse.R
 import com.kamira.mortyverse.data.network.ApiService
@@ -72,9 +74,12 @@ class EpisodeDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupRecycler() {
-        characterAdapter = CharacterAdapter(emptyList())
+        characterAdapter = CharacterAdapter(emptyList(), onTap = { character ->
+            character.id?.let { moveToMovieDetailsActivity(it) }
+
+        })
         binding.rvCharacters.apply {
-            layoutManager = LinearLayoutManager(this@EpisodeDetailsActivity)
+            layoutManager = GridLayoutManager(this@EpisodeDetailsActivity, 2)
             adapter = characterAdapter
         }
     }
@@ -95,5 +100,11 @@ class EpisodeDetailsActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = "Episode Info"
         }
+    }
+
+    private fun moveToMovieDetailsActivity(movieId: Int) {
+        val intent = Intent(this, CharacterDetailsActivity::class.java)
+        intent.putExtra("movieId", movieId)
+        startActivity(intent)
     }
 }

@@ -95,9 +95,14 @@ https://rickandmortyapi.com/api/
 
 ## Screenshots
 
+### Characters List:
 ![Pagination Demo](images/movies.png)
 
+### Character Details:
 ![Pagination Demo](images/detail.png)
+
+### Episode Details:
+![episode.png](images/episode.png)
 
 ---
 
@@ -144,6 +149,14 @@ git clone https://github.com/moseskamira/rickandmorty-app.git
 - Internet connection
 
 ---
+
+
+## To generate Bundle
+
+- ./gradlew bundleRelease
+
+---
+
 
 ## Learning Outcomes
 
