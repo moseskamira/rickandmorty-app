@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.paginationandroid"
+    namespace = "com.character.mobile"
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.example.paginationandroid"
+        applicationId "com.character.mobile"
         minSdk 24
         targetSdk 36
         versionCode 1
