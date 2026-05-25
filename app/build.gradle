@@ -4,6 +4,13 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "com.kamira.mortyverse"
     compileSdk 36
@@ -12,17 +19,28 @@ android {
         applicationId "com.kamira.mortyverse"
         minSdk 24
         targetSdk 36
-        versionCode 1
-        versionName "1.0"
+        versionCode 103
+        versionName "1.0.3"
+    }
+
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -53,7 +71,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
 
     // ❌ REMOVE RxJava adapter (caused your error)
-     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
 
     // OkHttp (FIXED duplicate issue)
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
