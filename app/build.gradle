@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.character.mobile"
+    namespace = "com.kamira.mortyverse"
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.character.mobile"
+        applicationId "com.kamira.mortyverse"
         minSdk 24
         targetSdk 36
         versionCode 1

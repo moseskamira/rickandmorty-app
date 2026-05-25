@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PaginationAndroid</string>
+    <string name="app_name">morty</string>
     <string name="status_label">Status: </string>
     <string name="species_gender">Species: </string>
     <string name="origin_label">Origin: </string>
