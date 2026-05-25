@@ -19,8 +19,8 @@ android {
         applicationId "com.kamira.mortyverse"
         minSdk 24
         targetSdk 36
-        versionCode 103
-        versionName "1.0.3"
+        versionCode 104
+        versionName "1.0.4"
     }
 
     signingConfigs {
@@ -59,7 +59,8 @@ dependencies {
     implementation "androidx.core:core:1.12.0"
     implementation "androidx.core:core-ktx:1.12.0"
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation("androidx.appcompat:appcompat:1.7.0")
+//    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 

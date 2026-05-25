@@ -11,6 +11,12 @@
     <string name="characters">Characters</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="retry">Retry</string>
+    <string name="character_details">Character Details</string>
+    <string name="unknown">Unknown</string>
+
+
+
+
     <string name="episodes">Episodes</string>
     <string name="please_wait">Please Wait …</string>
     <string name="characters_count">Characters (%1$d)</string>
