@@ -21,18 +21,15 @@ class CharacterViewModel(private val repo: CharacterRepository) : ViewModel() {
     val characterEpisodes: LiveData<List<Episode>> = _characterEpisodes
     val episodeCharacters: LiveData<List<Character>> = _episodeCharacters
     private val _charactersError = MutableLiveData("")
-    val charactersError:LiveData<String> = _charactersError
-    private val _episode = MutableLiveData<Episode>()
+    val charactersError: LiveData<String> = _charactersError
     val movie: LiveData<Character> = _movie
-
-    val episode: LiveData<Episode> = _episode
     private val _isMovieLoading = MutableLiveData(false)
     private val _isLoadingCharacters = MutableLiveData(false)
     private val _characterEpisodesLoading = MutableLiveData(false)
     val isLoadingCharacters: LiveData<Boolean> = _isLoadingCharacters
-    val characterEpisodesLoading:LiveData<Boolean> = _characterEpisodesLoading
+    val characterEpisodesLoading: LiveData<Boolean> = _characterEpisodesLoading
     val isMovieLoading: LiveData<Boolean> = _isMovieLoading
-    private val _movieError = MutableLiveData<String>("")
+    private val _movieError = MutableLiveData("")
     val movieError: LiveData<String> = _movieError
     private val movieCache = mutableMapOf<Int, Character>()
     private val episodeCache = mutableMapOf<String, Episode>()
@@ -51,13 +48,13 @@ class CharacterViewModel(private val repo: CharacterRepository) : ViewModel() {
         )
     }
 
-   suspend fun getMovie(id: Int) {
-       movieCache[id]?.let {
-           _movie.value = it
-           return
-       }
-       _isMovieLoading.value = true
-       _movieError.value = ""
+    suspend fun getMovie(id: Int) {
+        movieCache[id]?.let {
+            _movie.value = it
+            return
+        }
+        _isMovieLoading.value = true
+        _movieError.value = ""
         val response = repo.getSingleMovie(id)
         if (response.success) {
             val data = response.data
@@ -72,31 +69,6 @@ class CharacterViewModel(private val repo: CharacterRepository) : ViewModel() {
             }
         }
         _isMovieLoading.value = false
-    }
-
-    suspend fun getEpisode(url: String) {
-        episodeCache[url]?.let {
-            _episode.value = it
-            return
-        }
-//        _isMovieLoading.value = true
-//        _movieError.value = ""
-        val response = repo.getSingleEpisode(url = url)
-        if (response.success) {
-            val data = response.data
-            data?.let {
-                episodeCache[url] = it
-                _episode.value = it
-            }
-        } else {
-            val error = response.error
-            error?.let {
-//                _movieError.value = it
-            }
-        }
-//        _isMovieLoading.value = false
-
-
     }
 
     suspend fun getEpisodeCharacters(urls: List<String>) {
