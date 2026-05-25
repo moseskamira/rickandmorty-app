@@ -1,4 +1,4 @@
-# 🧪 Rick & Morty Explorer (Android)
+# Rick & Morty Explorer (Android)
 
 A modern Android application built with Kotlin that explores the **Rick and Morty API**, showcasing characters, episodes, and locations using clean architecture and Paging 3 for efficient data loading.
 
@@ -6,23 +6,23 @@ This project demonstrates real-world Android development practices including **M
 
 ---
 
-## 🚀 Features
+## Features
 
-- 🔄 Infinite scrolling with **Paging 3**
-- 🌐 Integration with **Rick and Morty API**
-- 🧑 Character listing with details view
-- 📺 Episode browsing and episode details
-- 📍 Location exploration (if implemented)
-- ⚡ Retrofit + OkHttp for networking
-- 🧠 MVVM architecture (Clean separation of concerns)
-- 📦 Repository + PagingSource pattern
-- 🔄 ViewModel state management
-- 🖼️ RecyclerView optimized rendering
-- ❌ Loading, error, and empty states handling
+-  Infinite scrolling with **Paging 3**
+-  Integration with **Rick and Morty API**
+-  Character listing with details view
+-  Episode browsing and episode details
+-  Location exploration
+-  Retrofit + OkHttp for networking
+-  MVVM architecture (Clean separation of concerns)
+-  Repository + PagingSource pattern
+-  ViewModel state management
+-  RecyclerView optimized rendering
+-  Loading, error, and empty states handling
 
 ---
 
-## 🏗 Architecture
+##  Architecture
 
 ```text
 UI (Activity / Fragment)
@@ -38,7 +38,7 @@ Retrofit API (Rick & Morty API)
 
 ---
 
-## 🧰 Tech Stack
+##  Tech Stack
 
 - Kotlin
 - Android Paging 3
@@ -52,7 +52,7 @@ Retrofit API (Rick & Morty API)
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 data
@@ -86,14 +86,14 @@ presentation
 
 ---
 
-## 🌍 API Reference
+## API Reference
 
 Rick and Morty API:  
 https://rickandmortyapi.com/api/
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 ![Pagination Demo](images/movies.png)
 
@@ -101,7 +101,7 @@ https://rickandmortyapi.com/api/
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
 1. App launches and loads first page of characters
 2. PagingSource fetches data from API via Repository
@@ -112,7 +112,7 @@ https://rickandmortyapi.com/api/
 
 ---
 
-## 💡 Key Concepts Demonstrated
+## Key Concepts Demonstrated
 
 - Paging 3 implementation (no manual pagination)
 - MVVM clean architecture
@@ -123,7 +123,7 @@ https://rickandmortyapi.com/api/
 
 ---
 
-## 📦 Setup Instructions
+## Setup Instructions
 
 1. Clone the repository
 
@@ -137,7 +137,7 @@ git clone https://github.com/moseskamira/rickandmorty-app.git
 
 ---
 
-## 📱 Requirements
+## Requirements
 
 - Android Studio Giraffe or newer
 - Minimum SDK 24+
@@ -145,7 +145,7 @@ git clone https://github.com/moseskamira/rickandmorty-app.git
 
 ---
 
-## 🎯 Learning Outcomes
+## Learning Outcomes
 
 - Real-world API integration
 - Paging 3 implementation
@@ -155,6 +155,6 @@ git clone https://github.com/moseskamira/rickandmorty-app.git
 
 ---
 
-## 📄 License
+## License
 
 This project is open-source and available under the MIT License.
