@@ -38,8 +38,8 @@ class CharacterActivity : AppCompatActivity() {
     }
 
     private fun initializeRecyclerView() {
-        movieAdapter = CharacterPagingAdapter({ movie ->
-            movie.id?.let { moveToMovieDetailsActivity(it) }
+        movieAdapter = CharacterPagingAdapter({ character ->
+            character.id?.let { moveToMovieDetailsActivity(it) }
         })
         binding.movieRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@CharacterActivity)

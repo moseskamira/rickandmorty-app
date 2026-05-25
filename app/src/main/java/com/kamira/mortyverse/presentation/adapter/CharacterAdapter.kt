@@ -8,7 +8,8 @@ import com.kamira.mortyverse.databinding.CustomMoviesLayoutBinding
 import com.kamira.mortyverse.domain.models.Character
 
 class CharacterAdapter(
-    private var characters: List<Character>
+    private var characters: List<Character>,
+    private val onTap: (Character) -> Unit
 ) : RecyclerView.Adapter<CharacterAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -21,11 +22,22 @@ class CharacterAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindData(characters[position])
+        val character = characters[position]
+        holder.bindData(character)
+        holder.itemView.setOnClickListener {
+            onTap(character)
+        }
+
     }
+
     fun updateData(newCharacters: List<Character>) {
+        val oldSize = characters.size
+        val newSize = newCharacters.size
         characters = newCharacters
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, newSize)
+        if (newSize > oldSize) {
+            notifyItemRangeInserted(oldSize, newSize - oldSize)
+        }
     }
 
     class MyViewHolder(
