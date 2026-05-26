@@ -1,11 +1,7 @@
 package com.kamira.mortyverse.presentation.activities
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -16,36 +12,28 @@ import com.kamira.mortyverse.databinding.ActivityCharacterDetailsBinding
 import com.kamira.mortyverse.domain.models.Character
 import com.kamira.mortyverse.domain.models.Episode
 import com.kamira.mortyverse.presentation.extensions.applyToolbarInsets
+import com.kamira.mortyverse.presentation.extensions.show
 import com.kamira.mortyverse.presentation.factory.AppViewModelFactory
 import com.kamira.mortyverse.presentation.viewModel.CharacterViewModel
 import kotlinx.coroutines.launch
 
 class CharacterDetailsActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityCharacterDetailsBinding
     private lateinit var viewModel: CharacterViewModel
-    private lateinit var episodesButton: Button
     private val episodes = mutableListOf<Episode>()
-
+    companion object {
+        const val EXTRA_CHARACTER = "character"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        episodesButton = binding.episodesButton
-        episodesButton.isEnabled = false
-        episodesButton.text = getString(R.string.please_wait)
-        episodesButton.setOnClickListener {
-            if (episodes.isEmpty()) {
-                return@setOnClickListener
-            }
-            EpisodeBottomSheet(episodes = episodes).show(supportFragmentManager, "MyBottomSheet")
-        }
         setupToolbar()
+        setupEpisodesButton()
         initializeViewModel()
         observeViewModel()
-        fetchMovie()
+        initializeCharacter()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -54,88 +42,103 @@ class CharacterDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        val toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
+        binding.toolbar.apply {
+            setSupportActionBar(this)
+            applyToolbarInsets()
+        }
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = "Movie Details"
+            title = getString(R.string.character_details)
         }
-       toolbar.applyToolbarInsets()
+    }
+
+    private fun setupEpisodesButton() {
+        binding.episodesButton.apply {
+            isEnabled = false
+            text = getString(R.string.please_wait)
+            setOnClickListener {
+                if (episodes.isNotEmpty()) {
+                    EpisodeBottomSheet(
+                        episodes = episodes
+                    ).show(
+                        supportFragmentManager,
+                        EpisodeBottomSheet::class.java.simpleName
+                    )
+                }
+            }
+        }
     }
 
     private fun initializeViewModel() {
         val apiClient = ApiService().getRetrofitServiceApi()
         val repository = CharacterRepositoryImpl(apiClient)
-        val factory = AppViewModelFactory(movieRepo = repository)
+        val factory = AppViewModelFactory(
+            movieRepo = repository
+        )
         viewModel = ViewModelProvider(
             this,
             factory
         )[CharacterViewModel::class.java]
     }
 
-    private fun fetchMovie() {
-        val movieId = intent.getIntExtra("movieId", -1)
-        if (movieId == -1) {
-            finish()
-            return
-        }
-        lifecycleScope.launch {
-            viewModel.getMovie(movieId)
-        }
+    private fun initializeCharacter() {
+        val character =
+            intent.getParcelableExtra<Character>(EXTRA_CHARACTER)
+        bindData(character)
     }
-
 
     private fun observeViewModel() {
-        viewModel.isMovieLoading.observe(this) { isLoading ->
-            binding.detailProgIndicator.visibility =
-                if (isLoading) View.VISIBLE else View.GONE
-        }
-
         viewModel.characterEpisodesLoading.observe(this) { isLoading ->
-            binding.episodesProgIndicator.visibility =
-                if (isLoading) View.VISIBLE else View.GONE
-        }
-        viewModel.movie.observe(this) { movie ->
-            bindData(movie)
-            movie.episode?.let {
-                binding.episodesProgIndicator.visibility = View.VISIBLE
-                lifecycleScope.launch {
-                    viewModel.getCharacterEpisodes(it)
-                }
-            }
-
+            binding.episodesProgIndicator.show(isLoading)
         }
         viewModel.characterEpisodes.observe(this) { list ->
-            episodesButton.isEnabled = true
-            episodesButton.text = getString(R.string.view_episodes)
             episodes.clear()
             episodes.addAll(list)
-            binding.episodeCount.text = "${episodes.size}"
+            binding.episodesButton.apply {
+                isEnabled = true
+                text = getString(R.string.view_episodes)
+            }
+            binding.episodeCount.text =
+                episodes.size.toString()
         }
     }
 
-
-    private fun bindData(movie: Character?) {
-        movie?.let {
-            binding.movieName.text =
-                it.name ?: ""
-            binding.movieStatus.text =
-                it.status ?: "Unknown"
-            binding.movieSpeciesGender.text =
+    private fun bindData(character: Character?) {
+        if (character == null) return
+        binding.apply {
+            movieName.text =
+                character.name.orEmpty()
+            movieStatus.text =
+                character.status ?: getString(R.string.unknown)
+            movieSpeciesGender.text =
                 getString(
                     R.string.species_gender_format,
-                    it.species ?: "-",
-                    it.gender ?: "-"
+                    character.species ?: "-",
+                    character.gender ?: "-"
                 )
-            binding.movieOrigin.text =
-                it.origin?.name ?: "Unknown"
-            binding.movieLocation.text =
-                it.location?.name ?: "Unknown"
-            Glide.with(this)
-                .load(it.image)
-                .into(binding.movieImage)
+            movieOrigin.text =
+                character.origin?.name
+                    ?: getString(R.string.unknown)
+            movieLocation.text =
+                character.location?.name
+                    ?: getString(R.string.unknown)
         }
+
+        Glide.with(this)
+            .load(character.image)
+            .into(binding.movieImage)
+        fetchEpisodes(character)
     }
 
-
+    private fun fetchEpisodes(character: Character) {
+        val episodeUrls =
+            character.episode.orEmpty()
+        if (episodeUrls.isEmpty()) return
+        binding.episodesProgIndicator.show(true)
+        lifecycleScope.launch {
+            viewModel.getCharacterEpisodes(
+                urls = episodeUrls
+            )
+        }
+    }
 }

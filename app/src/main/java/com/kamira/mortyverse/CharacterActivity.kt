@@ -5,22 +5,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputLayout
 import com.kamira.mortyverse.data.network.ApiClient
 import com.kamira.mortyverse.data.network.ApiService
 import com.kamira.mortyverse.data.repositories.CharacterRepositoryImpl
 import com.kamira.mortyverse.databinding.ActivityCharacterBinding
+import com.kamira.mortyverse.domain.models.Character
 import com.kamira.mortyverse.presentation.activities.CharacterDetailsActivity
 import com.kamira.mortyverse.presentation.adapter.CharacterPagingAdapter
+import com.kamira.mortyverse.presentation.extensions.applyToolbarInsets
 import com.kamira.mortyverse.presentation.factory.AppViewModelFactory
 import com.kamira.mortyverse.presentation.viewModel.CharacterViewModel
-import com.google.android.material.textfield.TextInputLayout
-import com.kamira.mortyverse.presentation.extensions.applyToolbarInsets
 
 class CharacterActivity : AppCompatActivity() {
     private lateinit var movieAdapter: CharacterPagingAdapter
@@ -43,7 +42,7 @@ class CharacterActivity : AppCompatActivity() {
 
     private fun initializeRecyclerView() {
         movieAdapter = CharacterPagingAdapter({ character ->
-            character.id?.let { moveToMovieDetailsActivity(it) }
+            loadCharacterDetails(character)
         })
         binding.movieRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@CharacterActivity)
@@ -80,9 +79,9 @@ class CharacterActivity : AppCompatActivity() {
         }
     }
 
-    private fun moveToMovieDetailsActivity(movieId: Int) {
+    private fun loadCharacterDetails(character:Character) {
         val intent = Intent(this, CharacterDetailsActivity::class.java)
-        intent.putExtra("movieId", movieId)
+        intent.putExtra("character", character)
         startActivity(intent)
     }
 

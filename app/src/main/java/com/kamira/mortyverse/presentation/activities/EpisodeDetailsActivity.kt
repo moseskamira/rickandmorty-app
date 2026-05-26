@@ -7,11 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kamira.mortyverse.R
 import com.kamira.mortyverse.data.network.ApiService
 import com.kamira.mortyverse.data.repositories.CharacterRepositoryImpl
 import com.kamira.mortyverse.databinding.ActivityEpisodeDetailsBinding
+import com.kamira.mortyverse.domain.models.Character
 import com.kamira.mortyverse.domain.models.Episode
 import com.kamira.mortyverse.presentation.adapter.CharacterAdapter
 import com.kamira.mortyverse.presentation.extensions.applyToolbarInsets
@@ -76,7 +76,7 @@ class EpisodeDetailsActivity : AppCompatActivity() {
 
     private fun setupRecycler() {
         characterAdapter = CharacterAdapter(emptyList(), onTap = { character ->
-            character.id?.let { moveToMovieDetailsActivity(it) }
+            loadCharacterDetails(character)
 
         })
         binding.rvCharacters.apply {
@@ -105,9 +105,9 @@ class EpisodeDetailsActivity : AppCompatActivity() {
         toolbar.applyToolbarInsets()
     }
 
-    private fun moveToMovieDetailsActivity(movieId: Int) {
+    private fun loadCharacterDetails(character:Character) {
         val intent = Intent(this, CharacterDetailsActivity::class.java)
-        intent.putExtra("movieId", movieId)
+        intent.putExtra("character", character)
         startActivity(intent)
     }
 }
