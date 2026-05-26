@@ -3,6 +3,7 @@ package com.kamira.mortyverse
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +23,7 @@ import com.kamira.mortyverse.presentation.factory.AppViewModelFactory
 import com.kamira.mortyverse.presentation.viewModel.CharacterViewModel
 
 class CharacterActivity : AppCompatActivity() {
-    private lateinit var movieAdapter: CharacterPagingAdapter
+    private lateinit var characterAdapter: CharacterPagingAdapter
     private lateinit var errorDisplay: TextInputLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var binding: ActivityCharacterBinding
@@ -41,10 +42,14 @@ class CharacterActivity : AppCompatActivity() {
     }
 
     private fun initializeRecyclerView() {
-        movieAdapter = CharacterPagingAdapter({ character ->
+        characterAdapter = CharacterPagingAdapter({ character ->
             loadCharacterDetails(character)
         })
         binding.movieRecyclerView.apply {
+            layoutAnimation=  AnimationUtils.loadLayoutAnimation(
+                this@CharacterActivity,
+                R.anim.layout_fall_down
+            )
             layoutManager = LinearLayoutManager(this@CharacterActivity)
             addItemDecoration(
                 DividerItemDecoration(
@@ -52,9 +57,11 @@ class CharacterActivity : AppCompatActivity() {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            adapter = movieAdapter
+            adapter = characterAdapter
+            scheduleLayoutAnimation()
         }
-        movieAdapter.addLoadStateListener { loadState ->
+
+        characterAdapter.addLoadStateListener { loadState ->
             progressBar.visibility = if (loadState.refresh is LoadState.Loading)
                 View.VISIBLE
             else
@@ -75,7 +82,7 @@ class CharacterActivity : AppCompatActivity() {
         val factory = AppViewModelFactory(repo)
         val viewModel = ViewModelProvider(this, factory = factory)[CharacterViewModel::class.java]
         viewModel.returnMovies().observe(this) { items ->
-            movieAdapter.submitData(this.lifecycle, items)
+           characterAdapter.submitData(this.lifecycle, items)
         }
     }
 

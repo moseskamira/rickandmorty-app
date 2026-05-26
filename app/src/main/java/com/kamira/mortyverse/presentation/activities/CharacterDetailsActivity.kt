@@ -99,7 +99,10 @@ class CharacterDetailsActivity : AppCompatActivity() {
                 text = getString(R.string.view_episodes)
             }
             binding.episodeCount.text =
-                episodes.size.toString()
+                getString(
+                    R.string.episode_count,
+                    episodes.size
+                )
         }
     }
 
