@@ -41,7 +41,7 @@ class EpisodeDetailsActivity : AppCompatActivity() {
     }
 
     private fun initializeViewModel() {
-        val apiClient = ApiService().getRetrofitServiceApi()
+        val apiClient = ApiService.apiClient
         val repository = CharacterRepositoryImpl(apiClient)
         val factory = AppViewModelFactory(movieRepo = repository)
         viewModel = ViewModelProvider(

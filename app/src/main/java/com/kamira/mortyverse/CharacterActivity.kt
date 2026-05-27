@@ -11,7 +11,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -86,7 +85,7 @@ class CharacterActivity : AppCompatActivity() {
     }
 
     private fun initializeViewModel() {
-        val apiClient: ApiClient = ApiService().getRetrofitServiceApi()
+        val apiClient: ApiClient = ApiService.apiClient
         val repo = CharacterRepositoryImpl(apiClient = apiClient)
         val factory = AppViewModelFactory(repo)
         val viewModel = ViewModelProvider(this, factory = factory)[CharacterViewModel::class.java]
