@@ -5,7 +5,6 @@
     <string name="origin_label">Origin: </string>
     <string name="movie_name_label">Movie Name: </string>
     <string name="location_label">Location: </string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_episodes">View Episodes</string>
     <string name="characters">Characters</string>
@@ -13,10 +12,7 @@
     <string name="retry">Retry</string>
     <string name="character_details">Character Details</string>
     <string name="unknown">Unknown</string>
-
-
-
-
+    <string name="episode_count">%1$d</string>
     <string name="episodes">Episodes</string>
     <string name="please_wait">Please Wait …</string>
     <string name="characters_count">Characters (%1$d)</string>

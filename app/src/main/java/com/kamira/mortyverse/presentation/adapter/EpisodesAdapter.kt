@@ -27,9 +27,14 @@ class EpisodesAdapter(
         }
     }
 
-    class ViewHolder(private val binding: ItemEpisodeBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ItemEpisodeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindData(epi: Episode) {
-            binding.episodeText.text = epi.name
+            binding.apply {
+                episodeName.text = epi.name
+                episodeCode.text = epi.episode
+                episodeAirDate.text = epi.airDate
+            }
         }
     }
 
