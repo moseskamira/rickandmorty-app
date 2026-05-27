@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".CharacterActivity">
+
+    <!-- Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
@@ -12,29 +15,44 @@
         android:background="@color/white"
         app:title="Movies"
         app:titleCentered="true"
-        app:titleTextAppearance="@style/ToolbarTitleText"
-        app:titleTextColor="@android:color/black"/>
+        app:titleTextColor="@android:color/black" />
 
+    <!-- Error display -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/error_display_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/main_toolbar"
         android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_below="@+id/error_display_layout"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/circle_shape"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/holo_red_dark"
         android:visibility="gone" />
 
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/error_display_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:visibility="gone" />
+
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movie_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/main_toolbar"/>
+        android:layout_above="@id/ad_view"
+        android:layout_below="@id/progress_bar" />
+
+    <!-- Ad at bottom -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-2006965015577337/1847792537" />
 
 </RelativeLayout>

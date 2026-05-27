@@ -10,7 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.textfield.TextInputLayout
+import com.kamira.mortyverse.core.utils.AdMobConfig
 import com.kamira.mortyverse.data.network.ApiClient
 import com.kamira.mortyverse.data.network.ApiService
 import com.kamira.mortyverse.data.repositories.CharacterRepositoryImpl
@@ -27,6 +33,7 @@ class CharacterActivity : AppCompatActivity() {
     private lateinit var errorDisplay: TextInputLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var binding: ActivityCharacterBinding
+    private var interstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +46,8 @@ class CharacterActivity : AppCompatActivity() {
         progressBar = binding.progressBar
         initializeRecyclerView()
         initializeViewModel()
+        initializeAdMob()
+
     }
 
     private fun initializeRecyclerView() {
@@ -91,6 +100,27 @@ class CharacterActivity : AppCompatActivity() {
         intent.putExtra("character", character)
         startActivity(intent)
     }
+
+    private fun initializeAdMob() {
+        MobileAds.initialize(this)
+        val adView = binding.adView
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+        InterstitialAd.load(
+            this,
+            AdMobConfig.INTERSTITIAL_CHARACTER,
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    interstitialAd = ad
+                }
+            }
+        )
+    }
+
+//    fun showAd() {
+//        interstitialAd?.show(this)
+//    }
 
 
 }
